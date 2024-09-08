@@ -78,8 +78,6 @@ O comando `module load` faz parte do Environment Modules, uma ferramenta que aju
 - **Ambientes de Desenvolvimento:** `python`, `anaconda`, `cuda`
 - **Ferramentas de HPC:** `mpi`, `hdf5`
 
-Carregar o módulo correto é crucial para garantir que seu código seja compilado e executado com a versão correta das bibliotecas e ferramentas necessárias, maximizando a eficiência e evitando problemas de compatibilidade. Se precisar de algo mais específico sobre o LNCC ou outros detalhes, fique à vontade para me avisar!
-
 ## 3. Submeter Tarefas
 
 1. **Escrever Jobs:**
