@@ -1,6 +1,9 @@
+import os
+from datetime import datetime
 import tensorflow as tf
 from tensorflow.keras import datasets, layers, models
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # Carregar e pré-processar o conjunto de dados MNIST
 (train_images, train_labels), (test_images, test_labels) = datasets.mnist.load_data()
@@ -81,24 +84,48 @@ history = model.fit(train_images, train_labels, epochs=5,
                     validation_data=(test_images, test_labels))
 
 # Avaliar o modelo
+'''
+Avalia o desempenho do modelo treinado em um conjunto de dados de teste que não foi usado durante 
+o treinamento. A avaliação é feita para verificar como o modelo generaliza para novos dados, o que é 
+essencial para garantir que ele não está apenas memorizando o conjunto de treinamento (overfitting), 
+mas realmente aprendendo a fazer previsões úteis.
+'''
 test_loss, test_acc = model.evaluate(test_images, test_labels)
 print(f"Accuracy on test data: {test_acc:.4f}")
+
+# Criar uma pasta com a data e hora atuais
+current_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+save_dir = f"results_{current_time}"
+os.makedirs(save_dir, exist_ok=True)  # Cria a pasta se não existir
+
+# Salvar o histórico de treinamento em um arquivo CSV usando Pandas
+history_df = pd.DataFrame(history.history)
+history_csv_path = os.path.join(save_dir, 'training_history.csv')
+history_df.to_csv(history_csv_path, index=False)
+
+# Salvar a avaliação do modelo em um arquivo de texto
+evaluation_path = os.path.join(save_dir, 'model_evaluation.txt')
+with open(evaluation_path, 'w') as f:
+    f.write(f"Test Loss: {test_loss:.4f}\n")
+    f.write(f"Test Accuracy: {test_acc:.4f}\n")
 
 # Plotar a acurácia e a perda ao longo das épocas
 plt.figure(figsize=(12, 4))
 
 plt.subplot(1, 2, 1)
-plt.plot(history.history['accuracy'], label='Acurácia de Treinamento')
-plt.plot(history.history['val_accuracy'], label='Acurácia de Validação')
-plt.xlabel('Época')
-plt.ylabel('Acurácia')
+plt.plot(history.history['accuracy'], label='Training Accuracy')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
 plt.legend()
 
 plt.subplot(1, 2, 2)
-plt.plot(history.history['loss'], label='Perda de Treinamento')
-plt.plot(history.history['val_loss'], label='Perda de Validação')
-plt.xlabel('Época')
-plt.ylabel('Perda')
+plt.plot(history.history['loss'], label='Training Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
 plt.legend()
 
-plt.show()
+# Salvar o gráfico na pasta criada
+plt.savefig(os.path.join(save_dir, 'accuracy_loss_plot.png'))
+
