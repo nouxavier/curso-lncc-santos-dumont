@@ -192,7 +192,7 @@ Divida o trabalho em tarefas menores para uma melhor distribuição do processam
 
 ## Exemplos de Scripts de Submissão
 
-- **[Modelo TensorFlow 2.13 Básico](src/model_cnn_tensorflow.py)**
+- **[Modelo TensorFlow 2.13 Básico](https://github.com/nouxavier/curso-lncc-santos-dumont/blob/main/src/model_cnn_tensorflor.py)**
 
 ## Resolução de Problemas Comuns
 
